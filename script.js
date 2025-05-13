@@ -659,4 +659,7 @@ function showMessage(element, message, type) {
 }
 
 // Initialize the app when DOM is loaded
-document.addEventListener('DOMContentLoaded', init);
+setTimeout(() => {
+    document.getElementById('appContainer').style.display = 'block';
+    init();
+}, 0);
