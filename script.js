@@ -1,11 +1,13 @@
 // Firebase configuration - Replace with your actual config
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+const firebaseConfig = {
+  apiKey: "AIzaSyAx0MAEUiYCGq-fY1OI-nOYR4-uRXh43ws",
+  authDomain: "tracker-6f5af.firebaseapp.com",
+  databaseURL: "https://tracker-6f5af-default-rtdb.firebaseio.com",
+  projectId: "tracker-6f5af",
+  storageBucket: "tracker-6f5af.firebasestorage.app",
+  messagingSenderId: "311345597895",
+  appId: "1:311345597895:web:34bcaecc4403985d45dde2"
 };
 
 // Initialize Firebase
