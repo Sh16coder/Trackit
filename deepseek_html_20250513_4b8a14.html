@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Tracker Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Loading Screen -->
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loader"></div>
+            <p>Loading your study data...</p>
+        </div>
+
+        <!-- Main App (initially hidden) -->
+        <div class="app-container" id="appContainer">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-content">
+                    <h1 class="logo">
+                        <i class="fas fa-graduation-cap"></i> Study<span>Pro</span>
+                    </h1>
+                    <div class="auth-buttons" id="authButtons">
+                        <button class="btn btn-outline" id="loginBtn">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <button class="btn btn-primary" id="signupBtn">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </button>
+                    </div>
+                    <div class="user-menu" id="userMenu" style="display:none;">
+                        <span class="user-email" id="userEmail"></span>
+                        <button class="btn btn-danger" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Auth Message -->
+            <div class="auth-message" id="authMessage"></div>
+
+            <!-- Timer Section -->
+            <section class="timer-section card" id="timerSection">
+                <div class="card-header">
+                    <h2><i class="fas fa-clock"></i> Study Timer</h2>
+                    <button class="btn btn-icon" id="addSubjectBtn">
+                        <i class="fas fa-plus"></i> Add Subject
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="timer-controls">
+                        <div class="select-wrapper">
+                            <select class="subject-select" id="subjectSelect">
+                                <option value="">Select a subject</option>
+                                <!-- Subjects will be added dynamically -->
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="timer-buttons">
+                            <button class="btn btn-success timer-btn" id="startBtn">
+                                <i class="fas fa-play"></i> Start
+                            </button>
+                            <button class="btn btn-danger timer-btn" id="stopBtn" style="display:none;">
+                                <i class="fas fa-stop"></i> Stop
+                            </button>
+                        </div>
+                    </div>
+                    <div class="timer-display" id="timerDisplay">
+                        <span>00</span>:<span>00</span>:<span>00</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section class="stats-section card" id="statsSection">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-bar"></i> Your Study Stats</h2>
+                    <div class="share-controls">
+                        <div class="share-code" id="shareCodeBtn">
+                            <span id="shareCode">Loading...</span>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <button class="btn btn-icon" id="viewSharedBtn">
+                            <i class="fas fa-eye"></i> View Shared
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="stats-grid" id="statsGrid">
+                        <!-- Stats cards will be added here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chart Section -->
+            <section class="chart-section card" id="chartSection">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-pie"></i> Study Analytics</h2>
+                    <div class="chart-options">
+                        <select id="chartTypeSelect" class="chart-type-select">
+                            <option value="bar">Bar Chart</option>
+                            <option value="pie">Pie Chart</option>
+                            <option value="line">Line Chart</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="studyChart"></canvas>
+                </div>
+            </section>
+        </div>
+
+        <!-- Modals -->
+        <!-- Add Subject Modal -->
+        <div class="modal" id="addSubjectModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-book"></i> Add New Subject</h3>
+                    <button class="close-btn" id="closeAddSubjectModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="newSubjectName">Subject Name</label>
+                        <input type="text" id="newSubjectName" placeholder="e.g. Physics, Chemistry...">
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectColor">Color</label>
+                        <input type="color" id="subjectColor" value="#4361ee">
+                    </div>
+                    <button class="btn btn-primary" id="addSubjectSubmit">
+                        <i class="fas fa-plus"></i> Add Subject
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div class="modal" id="loginModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-sign-in-alt"></i> Login</h3>
+                    <button class="close-btn" id="closeLoginModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="loginMessage" class="message"></div>
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password">
+                    </div>
+                    <button class="btn btn-primary" id="loginSubmit">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Modal -->
+        <div class="modal" id="signupModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-user-plus"></i> Sign Up</h3>
+                    <button class="close-btn" id="closeSignupModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="signupMessage" class="message"></div>
+                    <div class="form-group">
+                        <label for="signupName">Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a password (min 6 chars)">
+                    </div>
+                    <button class="btn btn-primary" id="signupSubmit">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Shared Stats Modal -->
+        <div class="modal" id="viewStatsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-share-alt"></i> View Shared Stats</h3>
+                    <button class="close-btn" id="closeViewStatsModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="viewStatsMessage" class="message"></div>
+                    <div class="form-group">
+                        <label for="shareCodeInput">Enter Share Code</label>
+                        <input type="text" id="shareCodeInput" placeholder="Enter the share code">
+                    </div>
+                    <button class="btn btn-primary" id="viewStatsSubmit">
+                        <i class="fas fa-eye"></i> View Stats
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Add Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <!-- Main JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
