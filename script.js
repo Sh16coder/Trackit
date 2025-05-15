@@ -1,6 +1,5 @@
 // Firebase configuration - Replace with your actual config
 const firebaseConfig = {
-const firebaseConfig = {
   apiKey: "AIzaSyAx0MAEUiYCGq-fY1OI-nOYR4-uRXh43ws",
   authDomain: "tracker-6f5af.firebaseapp.com",
   databaseURL: "https://tracker-6f5af-default-rtdb.firebaseio.com",
