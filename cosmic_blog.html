@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Blog - Beyond the Universe</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --quantum-purple: #8B5CF6;
+            --cosmic-blue: #06B6D4;
+            --nebula-pink: #EC4899;
+            --stellar-gold: #F59E0B;
+            --void-black: #0F0F23;
+            --space-gray: #1E1E2E;
+            --plasma-gradient: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5);
+            --galaxy-spiral: conic-gradient(from 0deg at 50% 50%, #ff006e 0deg, #8338ec 72deg, #3a86ff 144deg, #06ffa5 216deg, #ffbe0b 288deg, #ff006e 360deg);
+            --nebula-cloud: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.8) 0%, rgba(236, 72, 153, 0.6) 30%, rgba(6, 182, 212, 0.4) 60%, transparent 100%);
+            --wormhole: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.8) 50%, #000 100%);
+            --aurora: linear-gradient(135deg, #00ff87 0%, #60efff 25%, #ff00ff 50%, #ffaa00 75%, #00ff87 100%);
+            --hyperspace: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            --text-glow: 0 0 20px currentColor;
+            --cosmic-shadow: 0 0 50px rgba(139, 92, 246, 0.5), 0 0 100px rgba(236, 72, 153, 0.3), 0 0 150px rgba(6, 182, 212, 0.2);
+        }
+
+        [data-theme="light"] {
+            --void-black: #f8fafc;
+            --space-gray: #e2e8f0;
+            --text-glow: 0 0 10px rgba(139, 92, 246, 0.6);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--void-black);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(6, 182, 212, 0.2) 0%, transparent 50%);
+            z-index: -2;
+            animation: cosmic-drift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes cosmic-drift {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        /* QUANTUM PARTICLE SYSTEM */
+        .quantum-field {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .quantum-particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--aurora);
+            opacity: 0;
+            animation: quantum-dance 15s linear infinite;
+        }
+
+        @keyframes quantum-dance {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0) rotate(0deg);
+                filter: hue-rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.5) rotate(360deg);
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        /* GALACTIC SPIRALS */
+        .galactic-spiral {
+            position: fixed;
+            width: 200vmax;
+            height: 200vmax;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--galaxy-spiral);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: galactic-rotation 60s linear infinite;
+            z-index: -3;
+        }
+
+        .galactic-spiral::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            right: 10%;
+            bottom: 10%;
+            border-radius: 50%;
+            background: var(--wormhole);
+        }
+
+        @keyframes galactic-rotation {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* WELCOME SCREEN - INTERDIMENSIONAL */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.9) 70%),
+                var(--galaxy-spiral);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: all 2s cubic-bezier(0.23, 1, 0.32, 1);
+            backdrop-filter: blur(20px) saturate(180%);
+        }
+
+        .welcome-screen.hidden {
+            opacity: 0;
+            transform: scale(2) rotate(180deg);
+            pointer-events: none;
+            filter: blur(50px);
+        }
+
+        .welcome-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--nebula-cloud);
+            border-radius: 50%;
+            animation: nebula-pulse 4s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes nebula-pulse {
+            0%, 100% { transform: scale(0.8) rotate(0deg); opacity: 0.3; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 0.7; }
+        }
+
+        .welcome-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2rem, 8vw, 6rem);
+            font-weight: 900;
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            animation: plasma-flow 3s ease-in-out infinite, title-levitate 6s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(139, 92, 246, 0.8);
+            letter-spacing: 0.1em;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes plasma-flow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes title-levitate {
+            0%, 100% { transform: translateY(0px) rotateX(0deg); }
+            50% { transform: translateY(-20px) rotateX(10deg); }
+        }
+
+        .cosmic-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: 50px;
+            padding: 1.5rem 3rem;
+            font-size: 1.3rem;
+            color: #fff;
+            width: 100%;
+            max-width: 500px;
+            outline: none;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            backdrop-filter: blur(20px) saturate(180%);
+            position: relative;
+            margin: 2rem 0;
+            text-align: center;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .cosmic-input::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--aurora);
+            border-radius: 50px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .cosmic-input:focus {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: var(--cosmic-shadow);
+            text-shadow: var(--text-glow);
+        }
+
+        .cosmic-input:focus::before {
+            opacity: 1;
+            animation: border-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes border-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cosmic-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+        }
+
+        .dimensional-button {
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            border: none;
+            border-radius: 50px;
+            padding: 1.5rem 4rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transform-style: preserve-3d;
+        }
+
+        .dimensional-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--hyperspace);
+            transition: left 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .dimensional-button:hover {
+            transform: translateY(-10px) rotateX(15deg);
+            box-shadow: 
+                0 20px 40px rgba(139, 92, 246, 0.4),
+                0 40px 80px rgba(236, 72, 153, 0.3),
+                0 60px 120px rgba(6, 182, 212, 0.2);
+            animation: plasma-flow 1.5s ease-in-out infinite;
+        }
+
+        .dimensional-button:hover::before {
+            left: 100%;
+        }
+
+        .dimensional-button:active {
+            transform: translateY(-5px) rotateX(10deg) scale(0.98);
+        }
+
+        /* MAIN CONTENT - COSMIC EVOLUTION */
+        .main-content {
+            opacity: 0;
+            transform: translateZ(-1000px) rotateY(90deg);
+            transition: all 2s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+            transform: translateZ(0) rotateY(0deg);
+        }
+
+        /* HEADER - QUANTUM NAVIGATION */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 1.5rem 2rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            transform: translateY(-100%);
+            animation: header-descend 1s ease forwards 2s;
+        }
+
+        @keyframes header-descend {
+            to { transform: translateY(0); }
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--aurora);
+            background-size: 200% 100%;
+            animation: aurora-flow 3s linear infinite;
+        }
+
+        @keyframes aurora-flow {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: plasma-flow 3s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+            letter-spacing: 0.2em;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            backdrop-filter: blur(10px) saturate(180%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--aurora);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: var(--cosmic-shadow);
+            border-color: var(--quantum-purple);
+        }
+
+        .theme-toggle:hover::before {
+            opacity: 0.2;
+            animation: rotate360 2s linear infinite;
+        }
+
+        /* HERO SECTION - MULTIDIMENSIONAL */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10rem 2rem 6rem;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nebula-cloud);
+            opacity: 0.3;
+            animation: nebula-drift 30s ease-in-out infinite;
+        }
+
+        @keyframes nebula-drift {
+            0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+            25% { transform: translateX(100px) translateY(-50px) scale(1.1); }
+            50% { transform: translateX(-50px) translateY(100px) scale(0.9); }
+            75% { transform: translateX(-100px) translateY(-25px) scale(1.05); }
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            max-width: 1400px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text {
+            animation: dimensional-entry 2s cubic-bezier(0.23, 1, 0.32, 1) forwards 1s;
+            opacity: 0;
+            transform: translateX(-200px) rotateY(-45deg);
+        }
+
+        @keyframes dimensional-entry {
+            to {
+                opacity: 1;
+                transform: translateX(0) rotateY(0);
+            }
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: plasma-flow 4s ease-in-out infinite, text-float 8s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(139, 92, 246, 0.8);
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+
+        .hero-title::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            animation: title-aura 6s ease-in-out infinite;
+        }
+
+        @keyframes text-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes title-aura {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            font-family: 'Space Grotesk', sans-serif;
+            animation: subtitle-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes subtitle-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(139, 92, 246, 0.6); }
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            animation: dimensional-entry 2s cubic-bezier(0.23, 1, 0.32, 1) forwards 1.5s;
+            opacity: 0;
+            transform: translateX(200px) rotateY(45deg);
+            perspective: 1000px;
+        }
+
+        .profile-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            transform-style: preserve-3d;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            padding: 8px;
+            animation: plasma-flow 4s ease-in-out infinite, profile-levitate 8s ease-in-out infinite;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border-radius: 50%;
+            background: var(--galaxy-spiral);
+            z-index: -1;
+            animation: galactic-rotation 20s linear infinite;
+            opacity: 0.6;
+        }
+
+        .profile-image::after {
+            content: '';
+            position: absolute;
+            inset: -40px;
+            border-radius: 50%;
+            background: var(--aurora);
+            z-index: -2;
+            animation: galactic-rotation 30s linear infinite reverse;
+            opacity: 0.3;
+            filter: blur(10px);
+        }
+
+        @keyframes profile-levitate {
+            0%, 100% { transform: translateY(0px) rotateX(0deg); }
+            25% { transform: translateY(-20px) rotateX(5deg); }
+            50% { transform: translateY(0px) rotateX(0deg); }
+            75% { transform: translateY(-15px) rotateX(-5deg); }
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: linear-gradient(45deg, var(--space-gray), var(--void-black));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--hyperspace);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-container:hover .profile-img::before {
+            opacity: 1;
+            animation: hyperspace-scan 1s ease-in-out;
+        }
+
+        @keyframes hyperspace-scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* QUANTUM PARTICLES AROUND PROFILE */
+        .quantum-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            pointer-events: none;
+        }
+
+        .orbit-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--aurora);
+            border-radius: 50%;
+            animation: orbital-dance 12s linear infinite;
+        }
+
+        .orbit-particle:nth-child(1) {
+            top: 0;
+            left: 50%;
+            animation-delay: 0s;
+        }
+
+        .orbit-particle:nth-child(2) {
+            top: 25%;
+            right: 0;
+            animation-delay: 2s;
+        }
+
+        .orbit-particle:nth-child(3) {
+            bottom: 0;
+            right: 50%;
+            animation-delay: 4s;
+        }
+
+        .orbit-particle:nth-child(4) {
+            bottom: 25%;
+            left: 0;
+            animation-delay: 6s;
+        }
+
+        .orbit-particle:nth-child(5) {
+            top: 10%;
+            left: 20%;
+            animation-delay: 8s;
+        }
+
+        .orbit-particle:nth-child(6) {
+            bottom: 10%;
+            right: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes orbital-dance {
+            0% {
+                transform: rotate(0deg) translateX(250px) rotate(0deg);
+                opacity: 0;
+                filter: hue-rotate(0deg);
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            100% {
+                transform: rotate(360deg) translateX(250px) rotate(-360deg);
+                opacity: 0;
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        /* SECTIONS - COSMIC CONTAINERS */
+        .section {
+            padding: 8rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--quantum-purple), transparent);
+            transform: translateX(-50%);
+            opacity: 0.3;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 4rem;
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: plasma-flow 4s ease-in-out infinite;
+            position: relative;
+            letter-spacing: 0.1em;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            width: 200px;
+            height: 4px;
+            background: var(--aurora);
+            transform: translateX(-50%);
+            border-radius: 2px;
+            animation: title-underline 3s ease-in-out infinite;
+        }
+
+        @keyframes title-underline {
+            0%, 100% { width: 100px; opacity: 0.5; }
+            50% { width: 300px; opacity: 1; }
+        }
+
+        /* PROJECT CARDS - INTERDIMENSIONAL */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .project-card {
+            background: rgba(15, 15, 35, 0.6);
+            border-radius: 30px;
+            padding: 3rem;
+            border: 2px solid transparent;
+            backdrop-filter: blur(30px) saturate(180%);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--aurora);
+            background-size: 400% 400%;
+            border-radius: 30px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            animation: plasma-flow 3s ease-in-out infinite;
+        }
+
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: -1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-20px) rotateX(10deg) rotateY(-5deg);
+            box-shadow: 
+                0 30px 60px rgba(139, 92, 246, 0.3),
+                0 50px 100px rgba(236, 72, 153, 0.2),
+                0 70px 140px rgba(6, 182, 212, 0.1);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover::after {
+            width: 120%;
+            height: 120%;
+        }
+
+        .project-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+            animation: title-shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes title-shimmer {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(139, 92, 246, 0.8); }
+        }
+
+        .project-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            color: #fff;
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.05em;
+            animation: plasma-flow 3s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--hyperspace);
+            transition: left 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .project-link:hover {
+            transform: translateX(10px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.5);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .project-link:hover::before {
+            left: 100%;
+        }
+
+        /* DIARY SECTION - TEMPORAL INTERFACE */
+        .diary-container {
+            background: rgba(15, 15, 35, 0.6);
+            border-radius: 30px;
+            padding: 3rem;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            backdrop-filter: blur(30px) saturate(180%);
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diary-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--aurora);
+            background-size: 200% 100%;
+            animation: aurora-flow 4s linear infinite;
+        }
+
+        .diary-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--quantum-purple), var(--cosmic-blue), var(--nebula-pink));
+            animation: spectrum-shift 6s ease-in-out infinite;
+        }
+
+        @keyframes spectrum-shift {
+            0%, 100% { opacity: 0.5; transform: scaleY(1); }
+            50% { opacity: 1; transform: scaleY(1.1); }
+        }
+
+        .diary-entry {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 6px solid transparent;
+            border-image: var(--aurora) 1;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .diary-entry::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nebula-cloud);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: 20px;
+        }
+
+        .diary-entry:hover {
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateX(20px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(139, 92, 246, 0.2),
+                inset 0 0 20px rgba(139, 92, 246, 0.1);
+        }
+
+        .diary-entry:hover::before {
+            opacity: 0.3;
+        }
+
+        .diary-date {
+            font-size: 1rem;
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.1em;
+            animation: plasma-flow 4s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        .diary-content {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* SHARE STORIES - WORMHOLE PORTAL */
+        .share-section {
+            background: transparent;
+            border-radius: 40px;
+            padding: 4rem;
+            text-align: center;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .share-section::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: var(--galaxy-spiral);
+            animation: galactic-rotation 40s linear infinite;
+            opacity: 0.4;
+            border-radius: 50%;
+        }
+
+        .share-section::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: var(--wormhole);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            animation: wormhole-pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes wormhole-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
+        }
+
+        .share-content {
+            position: relative;
+            z-index: 10;
+            background: rgba(15, 15, 35, 0.8);
+            border-radius: 30px;
+            padding: 3rem;
+            backdrop-filter: blur(30px) saturate(180%);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .share-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: plasma-flow 3s ease-in-out infinite, title-levitate 6s ease-in-out infinite;
+            letter-spacing: 0.1em;
+        }
+
+        .share-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .share-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            color: #fff;
+            text-decoration: none;
+            padding: 1.5rem 4rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: plasma-flow 3s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        .share-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--hyperspace);
+            transition: left 1s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .share-button:hover {
+            transform: translateY(-15px) rotateX(15deg) scale(1.05);
+            box-shadow: 
+                0 30px 60px rgba(139, 92, 246, 0.4),
+                0 50px 100px rgba(236, 72, 153, 0.3),
+                0 70px 140px rgba(6, 182, 212, 0.2);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .share-button:hover::before {
+            left: 100%;
+        }
+
+        /* RESPONSIVE DESIGN - QUANTUM ADAPTATION */
+        @media (max-width: 1200px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+                text-align: center;
+            }
+
+            .profile-container {
+                width: 280px;
+                height: 280px;
+            }
+
+            .quantum-orbit {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: clamp(2rem, 8vw, 3rem);
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .profile-container {
+                width: 220px;
+                height: 220px;
+            }
+
+            .quantum-orbit {
+                width: 300px;
+                height: 300px;
+            }
+
+            .welcome-title {
+                font-size: clamp(1.5rem, 8vw, 3rem);
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 4rem 1rem;
+            }
+
+            .cosmic-input {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
+
+            .dimensional-button {
+                padding: 1rem 2.5rem;
+                font-size: 1rem;
+            }
+
+            .share-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* SCROLL ANIMATIONS - DIMENSIONAL TRANSITIONS */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(100px) rotateX(45deg);
+            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg);
+        }
+
+        /* CUSTOM SCROLLBAR - COSMIC HIGHWAY */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--void-black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--aurora);
+            border-radius: 6px;
+            background-size: 200% 100%;
+            animation: aurora-flow 3s linear infinite;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--plasma-gradient);
+            background-size: 400% 400%;
+            animation: plasma-flow 2s ease-in-out infinite;
+        }
+
+        /* LOADING ANIMATIONS */
+        .cosmic-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--void-black);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+
+        .cosmic-loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-spiral {
+            width: 100px;
+            height: 100px;
+            border: 4px solid transparent;
+            border-image: var(--aurora) 1;
+            border-radius: 50%;
+            animation: loading-spin 2s linear infinite;
+            position: relative;
+        }
+
+        .loading-spiral::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 4px solid transparent;
+            border-image: var(--plasma-gradient) 1;
+            border-radius: 50%;
+            animation: loading-spin 1.5s linear infinite reverse;
+        }
+
+        @keyframes loading-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* UTILITY ANIMATIONS */
+        @keyframes rotate360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ADVANCED HOVER STATES */
+        .project-card:nth-child(1):hover {
+            --glow-color: var(--quantum-purple);
+        }
+
+        .project-card:nth-child(2):hover {
+            --glow-color: var(--cosmic-blue);
+        }
+
+        .project-card:nth-child(3):hover {
+            --glow-color: var(--nebula-pink);
+        }
+
+        .diary-entry:nth-child(even) {
+            border-left-color: var(--cosmic-blue);
+        }
+
+        .diary-entry:nth-child(odd) {
+            border-left-color: var(--nebula-pink);
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic Loading Screen -->
+    <div class="cosmic-loading" id="cosmicLoading">
+        <div class="loading-spiral"></div>
+    </div>
+
+    <!-- Galactic Spiral Background -->
+    <div class="galactic-spiral"></div>
+
+    <!-- Quantum Particle Field -->
+    <div class="quantum-field" id="quantumField"></div>
+
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-content">
+            <h1 class="welcome-title">COSMIC DIMENSIONS</h1>
+            <div class="input-container">
+                <input type="text" class="cosmic-input" id="nameInput" placeholder="Enter your cosmic designation..." autocomplete="off">
+            </div>
+            <button class="dimensional-button" onclick="enterCosmos()">ENTER THE MULTIVERSE</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">COSMIC·NEXUS</div>
+                <button class="theme-toggle" onclick="toggleDimension()" id="themeToggle">🌙</button>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title" id="heroTitle">WELCOME TO THE INFINITE</h1>
+                    <p class="hero-subtitle">Journey through the cosmic expanse where digital artistry meets quantum creativity. I am a dimensional architect, crafting experiences that transcend reality itself.</p>
+                </div>
+                <div class="hero-image">
+                    <div class="profile-container">
+                        <div class="quantum-orbit">
+                            <div class="orbit-particle"></div>
+                            <div class="orbit-particle"></div>
+                            <div class="orbit-particle"></div>
+                            <div class="orbit-particle"></div>
+                            <div class="orbit-particle"></div>
+                            <div class="orbit-particle"></div>
+                        </div>
+                        <div class="profile-image">
+                            <div class="profile-img">QUANTUM ENTITY</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="section">
+            <h2 class="section-title scroll-reveal">DIMENSIONAL PROJECTS</h2>
+            <div class="projects-grid">
+                <div class="project-card scroll-reveal">
+                    <h3 class="project-title">QUANTUM PORTFOLIO</h3>
+                    <p class="project-description">A multidimensional showcase transcending traditional web boundaries. Built with advanced CSS architectures and quantum-inspired animations that bend spacetime itself.</p>
+                    <a href="#" class="project-link">EXPLORE DIMENSION →</a>
+                </div>
+                <div class="project-card scroll-reveal">
+                    <h3 class="project-title">NEURAL NEXUS</h3>
+                    <p class="project-description">AI-powered consciousness interface with real-time synaptic visualizations. Features hyperdimensional gradients and consciousness-level micro-interactions.</p>
+                    <a href="#" class="project-link">ENTER NEXUS →</a>
+                </div>
+                <div class="project-card scroll-reveal">
+                    <h3 class="project-title">COSMIC CALCULATOR</h3>
+                    <p class="project-description">A quantum computing interface with holographic mathematics and interdimensional calculations. Demonstrates advanced spacetime CSS transforms and reality-bending transitions.</p>
+                    <a href="#" class="project-link">CALCULATE INFINITY →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily Diary Section -->
+        <section class="section">
+            <h2 class="section-title scroll-reveal">TEMPORAL CHRONICLES</h2>
+            <div class="diary-container scroll-reveal">
+                <div class="diary-entry">
+                    <div class="diary-date">STARDATE 2025.271</div>
+                    <div class="diary-content">
+                        Today I transcended the boundaries of conventional CSS, discovering new quantum animation techniques that manipulate the very fabric of digital spacetime. The plasma gradients are responding to consciousness itself. I've unlocked the secrets of multidimensional web architectures.
+                    </div>
+                </div>
+                <div class="diary-entry">
+                    <div class="diary-date">STARDATE 2025.270</div>
+                    <div class="diary-content">
+                        Breakthrough achieved in Three.js consciousness mapping. The particle systems now respond to neural patterns, creating living geometries that pulse with cosmic energy. The intersection of quantum mechanics and digital art continues to reveal infinite possibilities.
+                    </div>
+                </div>
+                <div class="diary-entry">
+                    <div class="diary-date">STARDATE 2025.269</div>
+                    <div class="diary-content">
+                        Spent cycles refining the universal design consciousness. Color frequencies and typographic harmonics create quantum entanglement between user and interface. Every photon of light carries emotional resonance across dimensional barriers.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Share Stories Section -->
+        <section class="section">
+            <div class="share-section scroll-reveal">
+                <div class="share-content">
+                    <h2 class="share-title">SHARE YOUR COSMIC ESSENCE</h2>
+                    <p class="share-description">
+                        Do you carry stories from distant galaxies? I seek to collect the consciousness fragments of fellow cosmic travelers. 
+                        Join our interdimensional collective and transmit your unique frequency across the universal network.
+                    </p>
+                    <a href="#" class="share-button">TRANSMIT ESSENCE ✦</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let userName = '';
+        let isQuantumInitialized = false;
+        
+        // Initialize Cosmic Systems
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('cosmicLoading').classList.add('hidden');
+                initializeQuantumField();
+                initializeScrollReveal();
+            }, 2000);
+        });
+
+        // Create Quantum Particle Field
+        function initializeQuantumField() {
+            if (isQuantumInitialized) return;
+            
+            const quantumField = document.getElementById('quantumField');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'quantum-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                quantumField.appendChild(particle);
+            }
+            
+            isQuantumInitialized = true;
+        }
+
+        // Enter Cosmos Function
+        function enterCosmos() {
+            const nameInput = document.getElementById('nameInput');
+            userName = nameInput.value.trim();
+            
+            if (userName === '') {
+                nameInput.style.animation = 'shake 0.5s ease-in-out';
+                nameInput.placeholder = 'Cosmic designation required for dimensional travel!';
+                setTimeout(() => {
+                    nameInput.style.animation = '';
+                    nameInput.placeholder = 'Enter your cosmic designation...';
+                }, 2000);
+                return;
+            }
+            
+            // Dimensional Transition
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            welcomeScreen.classList.add('hidden');
+            
+            // Activate Main Reality
+            setTimeout(() => {
+                const mainContent = document.getElementById('mainContent');
+                mainContent.classList.add('visible');
+                
+                // Update Hero Title
+                const heroTitle = document.getElementById('heroTitle');
+                heroTitle.textContent = `GREETINGS ${userName.toUpperCase()}, COSMIC TRAVELER`;
+                
+                welcomeScreen.style.display = 'none';
+                
+                // Initialize Advanced Systems
+                setTimeout(() => {
+                    initializeAdvancedAnimations();
+                }, 1000);
+                
+            }, 2000);
+        }
+
+        // Advanced Animation Systems
+        function initializeAdvancedAnimations() {
+            // Quantum Mouse Interactions
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                // Update CSS Custom Properties for Mouse-Based Effects
+                document.documentElement.style.setProperty('--mouse-x', mouseX);
+                document.documentElement.style.setProperty('--mouse-y', mouseY);
+                
+                // Quantum Field Response
+                const particles = document.querySelectorAll('.quantum-particle');
+                particles.forEach((particle, index) => {
+                    const delay = index * 0.01;
+                    setTimeout(() => {
+                        const distance = Math.sqrt(Math.pow(mouseX - 0.5, 2) + Math.pow(mouseY - 0.5, 2));
+                        const intensity = Math.max(0, 1 - distance * 2);
+                        particle.style.filter = `hue-rotate(${intensity * 360}deg) brightness(${1 + intensity})`;
+                    }, delay * 1000);
+                });
+            });
+
+            // Quantum Scroll Effects
+            window.addEventListener('scroll', () => {
+                const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+                document.documentElement.style.setProperty('--scroll-progress', scrollProgress);
+                
+                // Update Galactic Spiral Based on Scroll
+                const spiral = document.querySelector('.galactic-spiral');
+                if (spiral) {
+                    spiral.style.transform = `translate(-50%, -50%) rotate(${scrollProgress * 360 * 2}deg)`;
+                }
+            });
+
+            // Quantum Keyboard Interactions
+            document.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    createQuantumBurst(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
+                }
+            });
+        }
+
+        // Create Quantum Burst Effect
+        function createQuantumBurst(x, y) {
+            const burst = document.createElement('div');
+            burst.style.position = 'fixed';
+            burst.style.left = x + 'px';
+            burst.style.top = y + 'px';
+            burst.style.width = '4px';
+            burst.style.height = '4px';
+            burst.style.background = 'var(--aurora)';
+            burst.style.borderRadius = '50%';
+            burst.style.pointerEvents = 'none';
+            burst.style.zIndex = '9999';
+            burst.style.animation = 'quantum-burst 1s ease-out forwards';
+            
+            document.body.appendChild(burst);
+            
+            setTimeout(() => {
+                burst.remove();
+            }, 1000);
+        }
+
+        // Add quantum-burst animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes quantum-burst {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(20);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Dimensional Theme Toggle
+        function toggleDimension() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (body.getAttribute('data-theme') === 'light') {
+                body.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙';
+                themeToggle.style.animation = 'rotate360 0.5s ease-in-out';
+            } else {
+                body.setAttribute('data-theme', 'light');
+                themeToggle.textContent = '☀️';
+                themeToggle.style.animation = 'rotate360 0.5s ease-in-out';
+            }
+            
+            setTimeout(() => {
+                themeToggle.style.animation = '';
+            }, 500);
+        }
+
+        // Enter Key Functionality
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                enterCosmos();
+            }
+        });
+
+        // Advanced Scroll Reveal System
+        function initializeScrollReveal() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        
+                        // Add staggered animation for grid items
+                        if (entry.target.classList.contains('project-card')) {
+                            const cards = document.querySelectorAll('.project-card');
+                            const index = Array.from(cards).indexOf(entry.target);
+                            entry.target.style.transitionDelay = `${index * 0.2}s`;
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all scroll-reveal elements
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Quantum Performance Optimization
+        let ticking = false;
+        
+        function updateQuantumEffects() {
+            // Batch DOM updates for better performance
+            requestAnimationFrame(() => {
+                // Update quantum particles based on performance
+                const particles = document.querySelectorAll('.quantum-particle');
+                const visibleParticles = Array.from(particles).filter(p => {
+                    const rect = p.getBoundingClientRect();
+                    return rect.top < window.innerHeight && rect.bottom > 0;
+                });
+                
+                ticking = false;
+            });
+        }
+
+        // Throttled scroll handler
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateQuantumEffects);
+                ticking = true;
+            }
+        });
+
+        // Quantum Resize Handler
+        window.addEventListener('resize', () => {
+            // Recalculate quantum field on resize
+            if (isQuantumInitialized) {
+                const quantumField = document.getElementById('quantumField');
+                const particles = quantumField.querySelectorAll('.quantum-particle');
+                
+                particles.forEach(particle => {
+                    particle.style.left = Math.random() * 100 + '%';
+                });
+            }
+        });
+
+        // Initialize Cosmic Consciousness
+        document.addEventListener('DOMContentLoaded', function() {
+            // Preload critical animations
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+                document.body.style.transition = 'opacity 1s ease';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
