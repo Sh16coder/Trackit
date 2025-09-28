@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Dimension | Personal Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for Theme */
+        :root {
+            --primary: #0a0a1f;
+            --secondary: #15152e;
+            --accent-1: #6a00ff;
+            --accent-2: #00d4ff;
+            --accent-3: #ff00c8;
+            --accent-4: #00ff88;
+            --text: #ffffff;
+            --text-secondary: #b0b0ff;
+            --card-bg: rgba(20, 20, 40, 0.7);
+            --card-border: rgba(106, 0, 255, 0.3);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --gradient: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
+        }
+
+        .light-theme {
+            --primary: #f0f5ff;
+            --secondary: #e6eeff;
+            --accent-1: #6a00ff;
+            --accent-2: #0080ff;
+            --accent-3: #ff0080;
+            --accent-4: #00cc66;
+            --text: #222244;
+            --text-secondary: #444466;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(106, 0, 255, 0.2);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        /* Particle Container */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .welcome-content {
+            text-align: center;
+            padding: 3rem;
+            background: var(--card-bg);
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            max-width: 500px;
+            width: 90%;
+            animation: float 6s ease-in-out infinite, glow 4s ease-in-out infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent, 
+                rgba(106, 0, 255, 0.3), 
+                transparent 30%
+            );
+            animation: rotate 10s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(1deg); }
+            50% { transform: translateY(-10px) rotate(-1deg); }
+            75% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 20px rgba(106, 0, 255, 0.3); }
+            100% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .welcome-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textShine 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textShine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            font-size: 1.1rem;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border: 1px solid var(--accent-1);
+            box-shadow: 0 0 20px rgba(106, 0, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 15px;
+            background: var(--gradient);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(106, 0, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.7s;
+            z-index: -1;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(106, 0, 255, 0.6);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            animation: slideInDown 1s ease;
+        }
+
+        @keyframes slideInDown {
+            0% { transform: translateY(-100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .welcome-message {
+            font-size: 1.8rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textShine 3s ease-in-out infinite alternate;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Profile Section */
+        .profile-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .profile-image {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInLeft 1s ease;
+        }
+
+        @keyframes fadeInLeft {
+            0% { transform: translateX(-50px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        .image-container {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 40px var(--accent-1);
+            animation: rotate 20s linear infinite, pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 40px var(--accent-1); }
+            50% { box-shadow: 0 0 60px var(--accent-2), 0 0 80px var(--accent-3); }
+        }
+
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: conic-gradient(var(--accent-1), var(--accent-2), var(--accent-3), var(--accent-1));
+            z-index: -1;
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-details {
+            flex: 2;
+            min-width: 300px;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+            animation: fadeInRight 1s ease;
+        }
+
+        @keyframes fadeInRight {
+            0% { transform: translateX(50px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        .profile-details:hover {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .profile-details h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .profile-details p {
+            margin-bottom: 1.2rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .skill {
+            padding: 0.7rem 1.2rem;
+            background: linear-gradient(135deg, rgba(106, 0, 255, 0.3), rgba(0, 212, 255, 0.3));
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            border: 1px solid rgba(106, 0, 255, 0.2);
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .skill:hover {
+            transform: scale(1.1) translateY(-5px);
+            background: linear-gradient(135deg, rgba(106, 0, 255, 0.5), rgba(0, 212, 255, 0.5));
+            box-shadow: 0 5px 15px rgba(106, 0, 255, 0.4);
+        }
+
+        /* Projects Section */
+        .projects-section {
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textShine 3s ease-in-out infinite alternate;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            animation: cardAppear 0.8s ease;
+        }
+
+        @keyframes cardAppear {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .project-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .project-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .project-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            color: var(--text);
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.8rem;
+            line-height: 1.7;
+        }
+
+        .project-link {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: bold;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.7s;
+            z-index: -1;
+        }
+
+        .project-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(106, 0, 255, 0.5);
+        }
+
+        .project-link:hover::before {
+            left: 100%;
+        }
+
+        /* Diary Section */
+        .diary-section {
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease 0.5s both;
+        }
+
+        .diary-entries {
+            display: grid;
+            gap: 2.5rem;
+        }
+
+        .diary-entry {
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+            animation: slideInUp 0.8s ease;
+        }
+
+        @keyframes slideInUp {
+            0% { transform: translateY(30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .diary-entry:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .entry-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: rgba(106, 0, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .entry-mood {
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .entry-content {
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        /* Share Section */
+        .share-section {
+            text-align: center;
+            padding: 4rem 0;
+            animation: fadeIn 1s ease 0.7s both;
+        }
+
+        .share-link {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(106, 0, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .share-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.7s;
+            z-index: -1;
+        }
+
+        .share-link:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(106, 0, 255, 0.6);
+        }
+
+        .share-link:hover::before {
+            left: 100%;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2.5rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            animation: fadeIn 1s ease 0.9s both;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-section {
+                flex-direction: column;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            
+            .welcome-content h1 {
+                font-size: 2rem;
+            }
+            
+            .image-container {
+                width: 220px;
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Container -->
+    <div id="particles-js"></div>
+
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-content">
+            <h1>Welcome to Cosmic Dimension</h1>
+            <p>May I know your name, space traveler?</p>
+            <input type="text" class="name-input" id="nameInput" placeholder="Enter your cosmic name">
+            <button class="btn" id="enterBtn">Enter the Dimension</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="mainContent">
+        <header class="header">
+            <h1 class="welcome-message" id="welcomeMessage">Welcome to Cosmic Dimension</h1>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <!-- Profile Section -->
+        <section class="profile-section">
+            <div class="profile-image">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Profile Picture" class="profile-img">
+                </div>
+            </div>
+            <div class="profile-details">
+                <h2>Alex Stellar</h2>
+                <p>Hello cosmic traveler! I'm a front-end developer and UI/UX designer with a passion for creating immersive digital experiences that transport users to new dimensions.</p>
+                <p>With over 7 years of experience in the digital cosmos, I specialize in creating visually stunning interfaces with smooth animations and interactive elements.</p>
+                <p>When I'm not coding, I'm usually exploring the latest in VR technology, studying astrophysics, or creating digital art inspired by the cosmos.</p>
+                
+                <div class="skills">
+                    <span class="skill">HTML/CSS</span>
+                    <span class="skill">JavaScript</span>
+                    <span class="skill">React</span>
+                    <span class="skill">UI/UX Design</span>
+                    <span class="skill">WebGL</span>
+                    <span class="skill">Animation</span>
+                    <span class="skill">Three.js</span>
+                    <span class="skill">Responsive Design</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects-section">
+            <h2 class="section-title">Cosmic Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>Nebula Explorer</h3>
+                    <p>An interactive 3D visualization of cosmic nebulae with WebGL and Three.js. Explore stunning nebula formations with realistic lighting and particle effects.</p>
+                    <a href="#" class="project-link">Explore Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>Galaxy Dashboard</h3>
+                    <p>A data visualization dashboard with space-themed charts and animations. Transform your analytics into an interstellar experience.</p>
+                    <a href="#" class="project-link">Explore Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>Stellar Portfolio</h3>
+                    <p>A portfolio template with particle effects and cosmic transitions. Perfect for developers and designers who want to stand out.</p>
+                    <a href="#" class="project-link">Explore Project</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diary Section -->
+        <section class="diary-section">
+            <h2 class="section-title">Cosmic Diary</h2>
+            <div class="diary-entries">
+                <div class="diary-entry">
+                    <div class="entry-header">
+                        <h3>Exploring New Frontiers</h3>
+                        <span class="entry-date">October 18, 2023</span>
+                    </div>
+                    <div class="entry-mood">🚀</div>
+                    <p class="entry-content">Today I started working on a new animation library that simulates gravitational effects on UI elements. The challenge is making it performant while maintaining the visual fidelity. I'm excited about the possibilities this could open up for creating more immersive web experiences. The way elements attract and repel each other based on simulated physics could revolutionize how we think about micro-interactions.</p>
+                </div>
+                <div class="diary-entry">
+                    <div class="entry-header">
+                        <h3>Stargazing Inspiration</h3>
+                        <span class="entry-date">October 12, 2023</span>
+                    </div>
+                    <div class="entry-mood">✨</div>
+                    <p class="entry-content">Went stargazing last night and got inspired by the Orion Nebula. The colors and patterns are breathtaking. I'm thinking about how to translate that cosmic beauty into a gradient system for web design. Maybe a tool that generates nebula-inspired color palettes? The deep purples, bright pinks, and electric blues of nebulae could create stunning backgrounds and accents for modern web interfaces.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Share Section -->
+        <section class="share-section">
+            <h2 class="section-title">Share Your Cosmic Story</h2>
+            <p>Have an interesting story or project you'd like to share with the universe?</p>
+            <a href="#" class="share-link">Share Your Story</a>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2023 Cosmic Dimension | Made with <i class="fas fa-heart" style="color: #ff0080;"></i> and Stardust</p>
+        </footer>
+    </div>
+
+    <!-- Particle.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles.js
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                particles: {
+                    number: {
+                        value: 120,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: ['#6a00ff', '#00d4ff', '#ff00c8', '#00ff88']
+                    },
+                    shape: {
+                        type: 'circle',
+                        stroke: {
+                            width: 0,
+                            color: '#000000'
+                        }
+                    },
+                    opacity: {
+                        value: 0.7,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 1,
+                            opacity_min: 0.3,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 3,
+                        random: true,
+                        anim: {
+                            enable: true,
+                            speed: 2,
+                            size_min: 0.5,
+                            sync: false
+                        }
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: '#6a00ff',
+                        opacity: 0.3,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1.5,
+                        direction: 'none',
+                        random: true,
+                        straight: false,
+                        out_mode: 'out',
+                        bounce: false,
+                        attract: {
+                            enable: true,
+                            rotateX: 600,
+                            rotateY: 1200
+                        }
+                    }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: 'repulse'
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: 'push'
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        grab: {
+                            distance: 400,
+                            line_linked: {
+                                opacity: 1
+                            }
+                        },
+                        bubble: {
+                            distance: 400,
+                            size: 40,
+                            duration: 2,
+                            opacity: 8,
+                            speed: 3
+                        },
+                        repulse: {
+                            distance: 100,
+                            duration: 0.4
+                        },
+                        push: {
+                            particles_nb: 4
+                        },
+                        remove: {
+                            particles_nb: 2
+                        }
+                    }
+                },
+                retina_detect: true
+            });
+        });
+
+        // Welcome screen functionality
+        document.getElementById('enterBtn').addEventListener('click', function() {
+            const name = document.getElementById('nameInput').value.trim();
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (name) {
+                welcomeMessage.textContent = `Welcome to Cosmic Dimension, ${name}!`;
+            }
+            
+            // Hide welcome screen
+            welcomeScreen.style.opacity = '0';
+            welcomeScreen.style.visibility = 'hidden';
+            
+            // Show main content with animation
+            setTimeout(() => {
+                mainContent.style.opacity = '1';
+                mainContent.style.transform = 'translateY(0)';
+            }, 500);
+        });
+
+        // Allow Enter key to submit name
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('enterBtn').click();
+            }
+        });
+
+        // Theme toggle functionality
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('light-theme');
+            const icon = this.querySelector('i');
+            
+            if (document.body.classList.contains('light-theme')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            
+            // Update particles color based on theme
+            const isLight = document.body.classList.contains('light-theme');
+            const newColor = isLight ? ['#6a00ff', '#0080ff', '#ff0080', '#00cc66'] : ['#6a00ff', '#00d4ff', '#ff00c8', '#00ff88'];
+            
+            if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
+                window.pJSDom[0].pJS.particles.color.value = newColor;
+                window.pJSDom[0].pJS.fn.particlesRefresh();
+            }
+        });
+    </script>
+</body>
+</html>
