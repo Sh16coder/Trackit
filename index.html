@@ -1224,41 +1224,271 @@
         }
     });
     
+    // Enhanced Music functionality with multiple tracks
+document.addEventListener('DOMContentLoaded', function() {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicPopup = document.getElementById('musicPopup');
+    const keepMusicBtn = document.getElementById('keepMusic');
+    const stopMusicBtn = document.getElementById('stopMusic');
+    
+    let musicStarted = false;
+    let currentTrackIndex = 0;
+    
+    // Cosmic music tracks - you can replace these with your preferred tracks
+    const musicTracks = [
+        {
+            title: "Space Journey",
+            url: "1.mp3"
+        },
+        {
+            title: "Cosmic Dreams",
+            url: "https://assets.mixkit.co/music/preview/mixkit-deep-urban-623.mp3"
+        },
+        {
+            title: "Nebula Waves",
+            url: "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3"
+        },
+        {
+            title: "Stellar Drift",
+            url: "https://assets.mixkit.co/music/preview/mixkit-hazy-after-hours-132.mp3"
+        },
+        {
+            title: "Galaxy Pulse",
+            url: "https://assets.mixkit.co/music/preview/mixkit-bass-house-electronic-125.mp3"
+        },
+        {
+            title: "Quantum Realm",
+            url: "https://assets.mixkit.co/music/preview/mixkit-lofi-hip-hop-118.mp3"
+        },
+        {
+            title: "Orbital Harmony",
+            url: "https://assets.mixkit.co/music/preview/mixkit-vibes-126.mp3"
+        }
+    ];
+    
+    // Function to load a random track
+    function loadRandomTrack() {
+        // Get a random index different from current
+        let newIndex;
+        do {
+            newIndex = Math.floor(Math.random() * musicTracks.length);
+        } while (newIndex === currentTrackIndex && musicTracks.length > 1);
+        
+        currentTrackIndex = newIndex;
+        const track = musicTracks[currentTrackIndex];
+        
+        // Update audio source
+        backgroundMusic.src = track.url;
+        backgroundMusic.load();
+        
+        // Update UI
+        updateTrackInfo(track.title);
+        
+        // If music was playing, play the new track
+        if (!backgroundMusic.paused) {
+            backgroundMusic.play().catch(e => console.log("Playback error:", e));
+        }
+        
+        return track;
+    }
+    
+    // Function to update track info in the control panel
+    function updateTrackInfo(title) {
+        const trackTitleElement = document.querySelector('.track-title');
+        if (trackTitleElement) {
+            trackTitleElement.textContent = title;
+        }
+    }
+    
+    // Function to start music and show popup
+    function startMusic() {
+        if (!musicStarted) {
+            // Load first track
+            loadRandomTrack();
+            
+            // Set volume to a reasonable level
+            backgroundMusic.volume = 0.4;
+            
+            // Play music with user interaction
+            backgroundMusic.play().then(() => {
+                musicStarted = true;
+                
+                // Show popup after a short delay
+                setTimeout(() => {
+                    musicPopup.classList.add('show');
+                }, 1000);
+                
+                // Start progress bar update
+                updateProgressBar();
+            }).catch(error => {
+                console.log("Autoplay prevented:", error);
+                // If autoplay is blocked, we'll try again when user interacts
+            });
+        }
+    }
+    
+    // Function to update progress bar
+    function updateProgressBar() {
+        const progressBar = document.querySelector('.progress-bar');
+        if (!progressBar) return;
+        
+        const update = () => {
+            if (backgroundMusic.duration) {
+                const percent = (backgroundMusic.currentTime / backgroundMusic.duration) * 100;
+                progressBar.style.width = percent + '%';
+            }
+        };
+        
+        // Update progress bar regularly
+        backgroundMusic.addEventListener('timeupdate', update);
+    }
+    
+    // Update welcome screen functionality to start music
+    document.getElementById('enterBtn').addEventListener('click', function() {
+        const name = document.getElementById('nameInput').value.trim();
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const mainContent = document.getElementById('mainContent');
+        
+        if (name) {
+            welcomeMessage.textContent = `Welcome to Cosmic Dimension, ${name}!`;
+        }
+        
+        // Hide welcome screen
+        welcomeScreen.style.opacity = '0';
+        welcomeScreen.style.visibility = 'hidden';
+        
+        // Show main content with animation
+        setTimeout(() => {
+            mainContent.style.opacity = '1';
+            mainContent.style.transform = 'translateY(0)';
+            
+            // Start music after entering
+            startMusic();
+        }, 500);
+    });
+    
+    // Allow Enter key to submit name
+    document.getElementById('nameInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('enterBtn').click();
+        }
+    });
+    
     // Popup button handlers
     keepMusicBtn.addEventListener('click', function() {
         musicPopup.classList.remove('show');
-        // Create persistent music toggle button
-        createMusicToggle();
+        // Create enhanced music control panel
+        createMusicControlPanel();
     });
     
     stopMusicBtn.addEventListener('click', function() {
         backgroundMusic.pause();
         musicPopup.classList.remove('show');
-        // Create persistent music toggle button
-        createMusicToggle();
+        // Create enhanced music control panel
+        createMusicControlPanel();
     });
     
-    // Function to create persistent music toggle button
-    function createMusicToggle() {
-        // Check if toggle already exists
-        if (!document.getElementById('musicToggle')) {
+    // Function to create enhanced music control panel
+    function createMusicControlPanel() {
+        // Check if panel already exists
+        if (!document.getElementById('musicControlPanel')) {
+            // Create control panel container
+            const controlPanel = document.createElement('div');
+            controlPanel.id = 'musicControlPanel';
+            controlPanel.className = 'music-control-panel';
+            
+            // Create toggle button
             const musicToggle = document.createElement('button');
             musicToggle.id = 'musicToggle';
             musicToggle.className = 'music-toggle';
             musicToggle.innerHTML = '<i class="fas fa-music"></i>';
-            musicToggle.title = 'Toggle Background Music';
+            musicToggle.title = 'Music Controls';
             
+            // Create controls container
+            const musicControls = document.createElement('div');
+            musicControls.className = 'music-controls';
+            
+            // Add music info
+            const musicInfo = document.createElement('div');
+            musicInfo.className = 'music-info';
+            musicInfo.innerHTML = `
+                <div class="current-track">Now Playing</div>
+                <div class="track-title">${musicTracks[currentTrackIndex].title}</div>
+            `;
+            
+            // Add control buttons
+            const controlButtons = document.createElement('div');
+            controlButtons.className = 'control-buttons';
+            controlButtons.innerHTML = `
+                <button id="stopMusicBtn" class="control-btn stop">
+                    <i class="fas fa-stop"></i> Stop
+                </button>
+                <button id="changeMusicBtn" class="control-btn change">
+                    <i class="fas fa-random"></i> Change
+                </button>
+            `;
+            
+            // Add progress bar
+            const progressContainer = document.createElement('div');
+            progressContainer.className = 'music-progress';
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            progressContainer.appendChild(progressBar);
+            
+            // Assemble controls
+            musicControls.appendChild(musicInfo);
+            musicControls.appendChild(controlButtons);
+            musicControls.appendChild(progressContainer);
+            
+            // Assemble panel
+            controlPanel.appendChild(musicToggle);
+            controlPanel.appendChild(musicControls);
+            
+            // Add to document
+            document.body.appendChild(controlPanel);
+            
+            // Add event listeners
             musicToggle.addEventListener('click', function() {
+                musicControls.classList.toggle('show');
+            });
+            
+            document.getElementById('stopMusicBtn').addEventListener('click', function() {
                 if (backgroundMusic.paused) {
                     backgroundMusic.play();
-                    this.innerHTML = '<i class="fas fa-music"></i>';
+                    this.innerHTML = '<i class="fas fa-stop"></i> Stop';
+                    musicToggle.innerHTML = '<i class="fas fa-music"></i>';
                 } else {
                     backgroundMusic.pause();
-                    this.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                    this.innerHTML = '<i class="fas fa-play"></i> Play';
+                    musicToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
                 }
             });
             
-            document.body.appendChild(musicToggle);
+            document.getElementById('changeMusicBtn').addEventListener('click', function() {
+                const track = loadRandomTrack();
+                
+                // Add visual feedback
+                this.innerHTML = '<i class="fas fa-sync fa-spin"></i> Changing...';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-random"></i> Change';
+                }, 1000);
+                
+                // If music was playing, continue with new track
+                if (!backgroundMusic.paused) {
+                    backgroundMusic.play().catch(e => console.log("Playback error:", e));
+                }
+            });
+            
+            // Close panel when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!controlPanel.contains(e.target) && !musicToggle.contains(e.target)) {
+                    musicControls.classList.remove('show');
+                }
+            });
+            
+            // Start progress bar updates
+            updateProgressBar();
         }
     }
     
