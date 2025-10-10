@@ -659,7 +659,170 @@
             color: var(--text-secondary);
             animation: fadeIn 1s ease 0.9s both;
         }
+/* Music Popup Styles */
+.music-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 31, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
 
+.music-popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    background: var(--card-bg);
+    border-radius: 25px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--card-border);
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    animation: float 6s ease-in-out infinite, glow 4s ease-in-out infinite alternate;
+    position: relative;
+    overflow: hidden;
+}
+
+.popup-content::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent, 
+        rgba(106, 0, 255, 0.3), 
+        transparent 30%
+    );
+    animation: rotate 10s linear infinite;
+    z-index: -1;
+}
+
+.popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.popup-header h2 {
+    font-size: 1.8rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: textShine 3s ease-in-out infinite alternate;
+}
+
+.popup-icon {
+    font-size: 2.5rem;
+    animation: bounce 2s infinite;
+}
+
+.popup-content p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.popup-btn {
+    padding: 1rem 1.8rem;
+    border: none;
+    border-radius: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.popup-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.7s;
+    z-index: -1;
+}
+
+.popup-btn:hover::before {
+    left: 100%;
+}
+
+.keep-btn {
+    background: var(--gradient);
+    color: white;
+    box-shadow: 0 4px 15px rgba(106, 0, 255, 0.4);
+}
+
+.stop-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    border: 1px solid var(--card-border);
+}
+
+.popup-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(106, 0, 255, 0.6);
+}
+
+/* Music Toggle Button for Persistent Control */
+.music-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--gradient);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 15px rgba(106, 0, 255, 0.4);
+    transition: var(--transition);
+    z-index: 100;
+}
+
+.music-toggle:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 8px 25px rgba(106, 0, 255, 0.6);
+            }
         /* Responsive Design */
         @media (max-width: 768px) {
             .profile-section {
@@ -687,7 +850,30 @@
 <body>
     <!-- Particle Container -->
     <div id="particles-js"></div>
+<!-- Add this audio element right after the opening body tag -->
+<audio id="backgroundMusic" loop>
+    <source src="https://assets.mixkit.co/music/preview/mixkit-space-game-668.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
 
+<!-- Add this popup modal right after the audio element -->
+<div id="musicPopup" class="music-popup">
+    <div class="popup-content">
+        <div class="popup-header">
+            <h2>Cosmic Soundscape</h2>
+            <div class="popup-icon">🎵</div>
+        </div>
+        <p>Do you want to listen my favourite background music?</p>
+        <div class="popup-buttons">
+            <button id="keepMusic" class="popup-btn keep-btn">
+                <i class="fas fa-play-circle"></i> Keep Playing
+            </button>
+            <button id="stopMusic" class="popup-btn stop-btn">
+                <i class="fas fa-stop-circle"></i> Stop Music
+            </button>
+        </div>
+    </div>
+</div>
     <!-- Welcome Screen -->
     <div class="welcome-screen" id="welcomeScreen">
         <div class="welcome-content">
@@ -926,7 +1112,112 @@
                 retina_detect: true
             });
         });
-
+// Music functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicPopup = document.getElementById('musicPopup');
+    const keepMusicBtn = document.getElementById('keepMusic');
+    const stopMusicBtn = document.getElementById('stopMusic');
+    let musicStarted = false;
+    
+    // Function to start music and show popup
+    function startMusic() {
+        if (!musicStarted) {
+            // Set volume to a reasonable level
+            backgroundMusic.volume = 0.4;
+            
+            // Play music with user interaction
+            backgroundMusic.play().then(() => {
+                musicStarted = true;
+                
+                // Show popup after a short delay
+                setTimeout(() => {
+                    musicPopup.classList.add('show');
+                }, 1000);
+            }).catch(error => {
+                console.log("Autoplay prevented:", error);
+                // If autoplay is blocked, we'll try again when user interacts
+            });
+        }
+    }
+    
+    // Update welcome screen functionality to start music
+    document.getElementById('enterBtn').addEventListener('click', function() {
+        const name = document.getElementById('nameInput').value.trim();
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const mainContent = document.getElementById('mainContent');
+        
+        if (name) {
+            welcomeMessage.textContent = `Welcome to Cosmic Dimension, ${name}!`;
+        }
+        
+        // Hide welcome screen
+        welcomeScreen.style.opacity = '0';
+        welcomeScreen.style.visibility = 'hidden';
+        
+        // Show main content with animation
+        setTimeout(() => {
+            mainContent.style.opacity = '1';
+            mainContent.style.transform = 'translateY(0)';
+            
+            // Start music after entering
+            startMusic();
+        }, 500);
+    });
+    
+    // Allow Enter key to submit name
+    document.getElementById('nameInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('enterBtn').click();
+        }
+    });
+    
+    // Popup button handlers
+    keepMusicBtn.addEventListener('click', function() {
+        musicPopup.classList.remove('show');
+        // Create persistent music toggle button
+        createMusicToggle();
+    });
+    
+    stopMusicBtn.addEventListener('click', function() {
+        backgroundMusic.pause();
+        musicPopup.classList.remove('show');
+        // Create persistent music toggle button
+        createMusicToggle();
+    });
+    
+    // Function to create persistent music toggle button
+    function createMusicToggle() {
+        // Check if toggle already exists
+        if (!document.getElementById('musicToggle')) {
+            const musicToggle = document.createElement('button');
+            musicToggle.id = 'musicToggle';
+            musicToggle.className = 'music-toggle';
+            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+            musicToggle.title = 'Toggle Background Music';
+            
+            musicToggle.addEventListener('click', function() {
+                if (backgroundMusic.paused) {
+                    backgroundMusic.play();
+                    this.innerHTML = '<i class="fas fa-music"></i>';
+                } else {
+                    backgroundMusic.pause();
+                    this.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                }
+            });
+            
+            document.body.appendChild(musicToggle);
+        }
+    }
+    
+    // Add click event to document to start music if autoplay was blocked
+    document.addEventListener('click', function() {
+        if (!musicStarted) {
+            startMusic();
+        }
+    }, { once: true });
+});
         // Welcome screen functionality
         document.getElementById('enterBtn').addEventListener('click', function() {
             const name = document.getElementById('nameInput').value.trim();
